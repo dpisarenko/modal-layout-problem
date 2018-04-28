@@ -1,14 +1,30 @@
 'use strict';
 
-// Declare app level module which depends on views, and components
-angular.module('myApp', [
-  'ngRoute',
-  'myApp.view1',
-  'myApp.view2',
-  'myApp.version'
-]).
-config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
-  $locationProvider.hashPrefix('!');
+var app = angular.module('app', ['ui.bootstrap']);
 
-  $routeProvider.otherwise({redirectTo: '/view1'});
-}]);
+
+app.controller('myCtrl', function($scope, $uibModal) {
+	console.log("Init");
+	$scope.buttonClicked = function() {
+		console.log("Button clicked");
+		var modalInstance = $uibModal.open({
+			templateUrl: 'myModalContent.html',
+			controller: 'ModalInstanceCtrl',
+			controllerAs: '$ctrl'
+		});
+	};
+
+});
+
+app.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance) {
+	var $ctrl = this;
+	$ctrl.ok = function () {
+		console.log("Closing with OK");
+		$uibModalInstance.close();
+	};
+
+	$ctrl.cancel = function () {
+		console.log("Closing with Cancel");
+		$uibModalInstance.dismiss('cancel');
+	};
+});
